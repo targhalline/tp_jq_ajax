@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> ALBUM</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+	<div class='container'>
+		<button id='load'>Charger et traiter les données</button>
+		<button id='recharge'>Recharger et traiter les données</button>
+		<div  border="5px solid red"> </div>
+	</div>
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script>
+		$(function() {
+			var obj = [];
+			$.get( 'http://rallycoding.herokuapp.com/api/music_albums', function( data ) {
+				$.each( data, function( i, e ) {		
+					obj.push("<div class='col-md-4'><div class='card img-fluid' style='width:500px'><img class='card-img-top' src='" + e.image + "' alt='Card image' style='width:100%'><div class='card-img-overlay'><h4 class='card-title'>" + e.title +  "du" + e.artist + "</h4><p class='card-text'>" + "<a href='" + e.thumbnail_image + "'>voir photo<a</p><a href='" + e.url + "' class='btn btn-primary'> Cliquer ici </a></div></div><button class='remove'>Supprimer</button></div>"); 
+				});
+			});
+			$('#load').click(function(){
+				$( '<div/>',{ 	
+					class:'row', 
+					html: obj.join( '' )
+				}).appendTo( '.container' );
+				$('.remove').click(function(){
+					$(this).parent().remove();	
+				});	
+			});
+			$('#recharge').click(function(){
+				$('.row').remove();
+				$( '<div/>',{ 	
+					class:'row', 
+					html: obj.join( '' )
+				}).appendTo( '.container' );	
+				$('.remove').click(function(){
+					$(this).parent().remove();	
+				});	
+			});
+		});
+	</script>
+</body>
+</html>
